@@ -1,96 +1,195 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Montserrat:wght@700;800&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* CapitalCupid Design System - All colors must be HSL */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Brand Colors */
+    --brand-magenta: 340 82% 52%; /* #E91E63 */
+    --brand-navy: 220 45% 20%; /* #1C2B4A */
+    --brand-gold: 45 93% 47%; /* #F4B400 */
+    --brand-orange: 14 100% 63%; /* #FF7043 */
+    
+    /* Neutrals */
+    --neutral-white: 0 0% 100%; /* #FFFFFF */
+    --neutral-light: 210 17% 98%; /* #F8F9FA */
+    --neutral-dark: 222 84% 5%; /* #0F172A */
+    --neutral-black: 0 0% 7%; /* #121212 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-
-    --radius: 0.5rem;
-
-    --sidebar-background: 0 0% 98%;
-
-    --sidebar-foreground: 240 5.3% 26.1%;
-
-    --sidebar-primary: 240 5.9% 10%;
-
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Semantic Colors */
+    --background: var(--neutral-white);
+    --foreground: var(--neutral-dark);
+    --card: var(--neutral-white);
+    --card-foreground: var(--neutral-dark);
+    --popover: var(--neutral-white);
+    --popover-foreground: var(--neutral-dark);
+    
+    --primary: var(--brand-magenta);
+    --primary-foreground: var(--neutral-white);
+    --secondary: var(--neutral-light);
+    --secondary-foreground: var(--neutral-dark);
+    
+    --accent: var(--brand-gold);
+    --accent-foreground: var(--neutral-dark);
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 16% 47%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: var(--neutral-white);
+    --border: 214 32% 91%;
+    --input: 214 32% 91%;
+    --ring: var(--brand-magenta);
+    
+    /* Gradients */
+    --gradient-hero: linear-gradient(135deg, hsl(var(--brand-magenta)), hsl(var(--brand-navy)));
+    --gradient-card: linear-gradient(145deg, hsl(var(--neutral-white)), hsl(var(--neutral-light)));
+    --gradient-gold: linear-gradient(135deg, hsl(var(--brand-gold)), hsl(45 100% 55%));
+    
+    /* Shadows */
+    --shadow-soft: 0 10px 30px -10px hsl(var(--brand-magenta) / 0.1);
+    --shadow-card: 0 4px 24px -6px hsl(var(--neutral-dark) / 0.1);
+    --shadow-gold: 0 0 40px hsl(var(--brand-gold) / 0.3);
+    
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    --bounce-gentle: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    
+    --radius: 1rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    --background: var(--neutral-black);
+    --foreground: var(--neutral-light);
+    --card: var(--neutral-dark);
+    --card-foreground: var(--neutral-light);
+    --popover: var(--neutral-dark);
+    --popover-foreground: var(--neutral-light);
+    --secondary: 217 33% 18%;
+    --secondary-foreground: var(--neutral-light);
+    --muted: 217 33% 18%;
+    --muted-foreground: 215 20% 65%;
+    --accent-foreground: var(--neutral-light);
+    --border: 217 33% 18%;
+    --input: 217 33% 18%;
+  }
+}
 
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
+@layer base {
+  * {
+    @apply border-border;
+  }
 
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
+  body {
+    @apply bg-background text-foreground font-sans;
+  }
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-heading;
+  }
+}
 
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
+@layer components {
+  /* Shadow utilities */
+  .shadow-soft {
+    box-shadow: var(--shadow-soft);
+  }
+  
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+  
+  .shadow-gold {
+    box-shadow: var(--shadow-gold);
+  }
 
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
+  /* Button Variants */
+  .btn-hero {
+    @apply bg-gradient-to-r from-accent to-brand-gold text-neutral-dark font-semibold px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105;
+    box-shadow: var(--shadow-gold);
+  }
+  
+  .btn-hero:hover {
+    @apply shadow-xl;
+  }
+  
+  .btn-ghost {
+    @apply text-primary hover:bg-primary/10 transition-colors duration-200;
+  }
 
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
+  /* Card Variants */
+  .card-landscape {
+    @apply bg-white rounded-2xl shadow-card border-0 overflow-hidden;
+  }
+  
+  .card-floating {
+    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20;
+  }
 
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
+  /* Interactive Elements */
+  .chip-selectable {
+    @apply px-4 py-2 rounded-full border-2 border-muted text-muted-foreground cursor-pointer transition-all duration-200;
+  }
+  
+  .chip-selected {
+    @apply border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20;
+  }
 
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+  /* Swipe Overlays */
+  .swipe-accept {
+    @apply absolute inset-0 bg-gradient-to-r from-green-500/80 to-emerald-400/80 flex items-center justify-center text-white text-6xl font-bold;
+  }
+  
+  .swipe-reject {
+    @apply absolute inset-0 bg-gradient-to-r from-red-500/80 to-pink-400/80 flex items-center justify-center text-white text-6xl font-bold;
+  }
+
+  /* Progress Elements */
+  .progress-bar-gold {
+    @apply bg-gradient-to-r from-accent to-brand-gold rounded-full h-1;
+  }
+
+  /* Particles */
+  .particle-heart {
+    @apply text-primary/30 animate-pulse;
+  }
+  
+  .particle-coin {
+    @apply text-accent/30 animate-bounce;
+  }
+}
+
+@layer utilities {
+  /* Motion Utilities */
+  .hover-lift {
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+  }
+  
+  .hover-tilt {
+    @apply transition-all duration-300 hover:rotate-1 hover:scale-105;
+  }
+  
+  .spring-entrance {
+    animation: spring-in 0.6s var(--bounce-gentle);
+  }
+  
+  @keyframes spring-in {
+    0% { opacity: 0; transform: scale(0.8) translateY(40px); }
+    50% { transform: scale(1.05) translateY(-10px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  
+  /* Gradient Text */
+  .text-gradient-gold {
+    @apply bg-gradient-to-r from-accent to-brand-gold bg-clip-text text-transparent;
+  }
+  
+  .text-gradient-brand {
+    @apply bg-gradient-to-r from-primary to-brand-navy bg-clip-text text-transparent;
   }
 }
 
