@@ -24,6 +24,7 @@ import { Input } from '@/components/ui/input';
 import { Stepper } from '@/components/ui/stepper';
 import { Chip } from '@/components/ui/chip';
 import { SegmentedSlider } from '@/components/ui/segmented-slider';
+import { YearsSlider } from '@/components/ui/years-slider';
 import { ParticleBackground } from '@/components/ui/particle-background';
 import { useProfileStore } from '@/lib/stores/profile-store';
 import type { TeamSize, FundingNeed } from '@/lib/types';
@@ -307,26 +308,11 @@ export default function Onboarding() {
                         ))}
                       </div>
 
-                      <div className="space-y-4">
-                        <label className="block text-sm font-medium text-foreground">
-                          Years in operation (optional)
-                        </label>
-                        <div className="max-w-md mx-auto">
-                          <input
-                            type="range"
-                            min="0"
-                            max="30"
-                            value={yearsInOperation}
-                            onChange={(e) => setYearsInOperation(Number(e.target.value))}
-                            className="w-full h-2 bg-muted rounded-lg appearance-none cursor-pointer slider"
-                          />
-                          <div className="flex justify-between text-xs text-muted-foreground mt-1">
-                            <span>0 years</span>
-                            <span className="font-medium text-foreground">{yearsInOperation} years</span>
-                            <span>30+ years</span>
-                          </div>
-                        </div>
-                      </div>
+                      <YearsSlider
+                        value={yearsInOperation}
+                        onChange={setYearsInOperation}
+                        className="max-w-md mx-auto"
+                      />
                     </div>
                   )}
 

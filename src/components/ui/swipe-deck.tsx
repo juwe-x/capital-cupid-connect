@@ -58,9 +58,15 @@ export function SwipeDeck({ grants, currentIndex, onSwipe, onComplete }: SwipeDe
   };
 
   const handleSwipeAction = (direction: 'left' | 'right') => {
-    onSwipe(currentGrant.id, direction);
-    setDragDirection(null);
-    setScrollProgress(0);
+    // Show the swipe direction for visual feedback
+    setDragDirection(direction);
+    
+    // Small delay to show the animation, then trigger the swipe
+    setTimeout(() => {
+      onSwipe(currentGrant.id, direction);
+      setDragDirection(null);
+      setScrollProgress(0);
+    }, 150);
   };
 
   return (

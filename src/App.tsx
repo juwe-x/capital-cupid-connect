@@ -7,6 +7,8 @@ import Index from "./pages/Index";
 import Onboarding from "./pages/Onboarding";
 import Swipe from "./pages/Swipe";
 import Shortlist from "./pages/Shortlist";
+import Apply from "./pages/Apply";
+import Submitted from "./pages/Submitted";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -22,6 +24,8 @@ const App = () => (
           <Route path="/onboarding" element={<Onboarding />} />
           <Route path="/swipe" element={<Swipe />} />
           <Route path="/shortlist" element={<Shortlist />} />
+          <Route path="/apply/:id" element={<Apply />} />
+          <Route path="/submitted/:id" element={<Submitted />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

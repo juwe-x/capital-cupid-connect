@@ -1,5 +1,4 @@
 import { motion } from 'framer-motion';
-import { Heart, Coins } from 'lucide-react';
 
 interface ParticleBackgroundProps {
   density?: 'low' | 'medium' | 'high';
@@ -12,10 +11,10 @@ export function ParticleBackground({ density = 'medium', className = '' }: Parti
   const particles = Array.from({ length: particleCount }, (_, i) => ({
     id: i,
     type: Math.random() > 0.6 ? 'heart' : 'coin',
-    size: Math.random() * 0.5 + 0.5, // 0.5 to 1
+    size: Math.random() * 8 + 16, // 16-24px
     x: Math.random() * 100,
     y: Math.random() * 100,
-    duration: Math.random() * 10 + 15, // 15-25 seconds
+    duration: Math.random() * 10 + 20, // 20-30 seconds
     delay: Math.random() * 5,
   }));
 
@@ -24,30 +23,26 @@ export function ParticleBackground({ density = 'medium', className = '' }: Parti
       {particles.map((particle) => (
         <motion.div
           key={particle.id}
-          className="absolute"
+          className={`absolute ${particle.type === 'heart' ? 'particle-heart' : 'particle-coin'}`}
           style={{
             left: `${particle.x}%`,
             top: `${particle.y}%`,
-            transform: `scale(${particle.size})`,
+            fontSize: `${particle.size}px`,
           }}
           animate={{
-            y: [-20, -40, -20],
-            x: [-5, 5, -5],
-            opacity: [0.2, 0.6, 0.2],
-            rotate: [0, 180, 360],
+            y: [0, -100, -200, -300],
+            x: [0, Math.random() * 20 - 10, Math.random() * 30 - 15],
+            opacity: [0, 0.3, 0.4, 0.2, 0],
+            rotate: [0, 360],
           }}
           transition={{
             duration: particle.duration,
             repeat: Infinity,
             delay: particle.delay,
-            ease: "easeInOut",
+            ease: "easeOut",
           }}
         >
-          {particle.type === 'heart' ? (
-            <Heart className="w-4 h-4 text-primary/20 fill-current" />
-          ) : (
-            <Coins className="w-4 h-4 text-accent/20" />
-          )}
+          {particle.type === 'heart' ? '💘' : '💵'}
         </motion.div>
       ))}
     </div>

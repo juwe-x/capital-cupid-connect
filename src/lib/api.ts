@@ -67,6 +67,20 @@ export const grantsApi = {
     const allGrants = await mockGetAllGrants();
     return allGrants.filter(grant => grantIds.includes(grant.id));
   },
+
+  // Submit application
+  submit: async (grantId: string, content: string): Promise<SubmitResponse> => {
+    // Mock implementation - in production would call real API
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve({ 
+          success: true, 
+          applicationId: `app-${Date.now()}`,
+          message: 'Application submitted successfully'
+        });
+      }, 1000);
+    });
+  },
 };
 
 export const draftsApi = {

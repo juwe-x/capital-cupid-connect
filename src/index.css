@@ -111,32 +111,40 @@
   .btn-hero {
     @apply bg-gradient-to-r from-accent to-brand-gold text-neutral-dark font-semibold px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105;
     box-shadow: var(--shadow-gold);
+    animation: gentle-pulse 3s ease-in-out infinite;
   }
   
   .btn-hero:hover {
     @apply shadow-xl;
+    box-shadow: 0 0 50px hsl(var(--brand-gold) / 0.6), var(--shadow-gold);
+    animation: none;
   }
   
   .btn-ghost {
-    @apply text-primary hover:bg-primary/10 transition-colors duration-200;
+    @apply text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-brand-navy/10 transition-all duration-300 hover:scale-105;
+  }
+
+  @keyframes gentle-pulse {
+    0%, 100% { box-shadow: var(--shadow-gold); }
+    50% { box-shadow: 0 0 40px hsl(var(--brand-gold) / 0.4), var(--shadow-gold); }
   }
 
   /* Card Variants */
   .card-landscape {
-    @apply bg-white rounded-2xl shadow-card border-0 overflow-hidden;
+    @apply bg-white rounded-2xl shadow-card border-0 overflow-hidden transition-all duration-300;
   }
   
   .card-floating {
-    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20;
+    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:-rotate-1;
   }
 
   /* Interactive Elements */
   .chip-selectable {
-    @apply px-4 py-2 rounded-full border-2 border-muted text-muted-foreground cursor-pointer transition-all duration-200;
+    @apply px-4 py-2 rounded-full border-2 border-muted text-muted-foreground cursor-pointer transition-all duration-200 hover:scale-105 hover:border-accent/50;
   }
   
   .chip-selected {
-    @apply border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20;
+    @apply border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20 scale-105;
   }
 
   /* Swipe Overlays */
@@ -155,11 +163,27 @@
 
   /* Particles */
   .particle-heart {
-    @apply text-primary/30 animate-pulse;
+    @apply text-primary/30;
+    animation: float-heart 6s ease-in-out infinite;
   }
   
   .particle-coin {
-    @apply text-accent/30 animate-bounce;
+    @apply text-accent/30;
+    animation: float-coin 8s ease-in-out infinite;
+  }
+
+  @keyframes float-heart {
+    0%, 100% { transform: translateY(0px) rotate(0deg); opacity: 0.2; }
+    25% { transform: translateY(-20px) rotate(5deg); opacity: 0.4; }
+    50% { transform: translateY(-40px) rotate(-3deg); opacity: 0.3; }
+    75% { transform: translateY(-60px) rotate(2deg); opacity: 0.2; }
+  }
+
+  @keyframes float-coin {
+    0%, 100% { transform: translateY(0px) scale(1); opacity: 0.2; }
+    25% { transform: translateY(-30px) scale(1.1); opacity: 0.4; }
+    50% { transform: translateY(-60px) scale(0.9); opacity: 0.3; }
+    75% { transform: translateY(-90px) scale(1.05); opacity: 0.2; }
   }
 }
 
