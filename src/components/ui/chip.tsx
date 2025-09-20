@@ -25,7 +25,7 @@ export function Chip({
           ? "border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20 shadow-sm"
           : "border-muted text-muted-foreground hover:border-accent/50 hover:text-accent-foreground hover:bg-accent/5",
         variant === 'industry' && "min-w-[120px] justify-center",
-        variant === 'need' && "hover-lift",
+        variant === 'need' && "hover:bg-accent/10 hover:border-accent/70",
         className
       )}
       {...props}

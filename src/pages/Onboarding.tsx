@@ -15,7 +15,8 @@ import {
   Laptop,
   Stethoscope,
   Car,
-  UtensilsCrossed
+  UtensilsCrossed,
+  Edit
 } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
@@ -49,7 +50,7 @@ const industries = [
 const malaysianStates = [
   'Kuala Lumpur', 'Selangor', 'Penang', 'Johor', 'Perak', 'Kedah',
   'Kelantan', 'Terengganu', 'Pahang', 'Negeri Sembilan', 'Melaka',
-  'Perlis', 'Sabah', 'Sarawak', 'Putrajaya', 'Labuan'
+  'Sabah', 'Sarawak', 'Putrajaya'
 ];
 
 const teamSizeOptions = [
@@ -76,6 +77,9 @@ export default function Onboarding() {
   const [selectedTeamSize, setSelectedTeamSize] = useState<TeamSize>(profile.teamSizeBracket || '1-10');
   const [selectedNeeds, setSelectedNeeds] = useState<FundingNeed[]>(profile.needs || []);
   const [yearsInOperation, setYearsInOperation] = useState(profile.years || 0);
+  const [showCustomInput, setShowCustomInput] = useState(false);
+  const [customNeed, setCustomNeed] = useState('');
+  const [triggerBurst, setTriggerBurst] = useState(0);
 
   const isStepValid = () => {
     switch (currentStep) {
@@ -90,6 +94,9 @@ export default function Onboarding() {
 
   const handleNext = () => {
     if (!isStepValid()) return;
+    
+    // Trigger burst animation
+    setTriggerBurst(prev => prev + 1);
     
     // Save current step data
     switch (currentStep) {
@@ -146,6 +153,32 @@ export default function Onboarding() {
     );
   };
 
+  const handleCustomNeedClick = () => {
+    setShowCustomInput(true);
+  };
+
+  const handleCustomNeedSave = () => {
+    if (customNeed.trim()) {
+      const customNeedValue = `Custom: ${customNeed.trim()}` as FundingNeed;
+      if (!selectedNeeds.includes(customNeedValue)) {
+        setSelectedNeeds(prev => [...prev, customNeedValue]);
+      }
+      setCustomNeed('');
+      setShowCustomInput(false);
+    }
+  };
+
+  const handleCustomNeedKeyPress = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      handleCustomNeedSave();
+    }
+  };
+
+  const handleEditField = (stepIndex: number) => {
+    setCurrentStep(stepIndex);
+  };
+
+  // Slide transition variants
   const slideVariants = {
     enter: (direction: number) => ({
       x: direction > 0 ? 300 : -300,
@@ -163,41 +196,46 @@ export default function Onboarding() {
     }),
   };
 
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-magenta to-brand-navy relative overflow-hidden">
-      <ParticleBackground density="low" className="opacity-30" />
+    <div className="min-h-screen bg-gradient-to-br from-brand-magenta to-brand-navy relative overflow-hidden onboarding-container">
+      <ParticleBackground 
+        density="low" 
+        className="opacity-40" 
+        onBurst={() => triggerBurst}
+      />
       
       <div className="container relative z-10 py-8">
         <div className="max-w-4xl mx-auto">
           {/* Stepper */}
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-12"
-          >
+          <div className="mb-8">
             <Stepper steps={steps} currentStep={currentStep} />
-          </motion.div>
+          </div>
 
           {/* Main Card */}
-          <Card className="card-floating min-h-[500px]">
-            <CardContent className="p-8">
-              <AnimatePresence mode="wait" custom={currentStep}>
-                <motion.div
-                  key={currentStep}
-                  custom={currentStep}
-                  variants={slideVariants}
-                  initial="enter"
-                  animate="center"
-                  exit="exit"
-                  transition={{
-                    x: { type: "spring", stiffness: 300, damping: 30 },
-                    opacity: { duration: 0.2 },
-                  }}
-                  className="space-y-8"
-                >
+          <Card className="card-floating h-[600px]">
+            <CardContent className="p-8 h-full">
+              <div className="flex h-full flex-col">
+                <div className="flex-grow min-h-0">
+                  <AnimatePresence mode="wait" custom={currentStep}>
+                    <motion.div
+                      key={currentStep}
+                      custom={currentStep}
+                      variants={slideVariants}
+                      initial="enter"
+                      animate="center"
+                      exit="exit"
+                      transition={{
+                        x: { type: "spring", stiffness: 300, damping: 30 },
+                        opacity: { duration: 0.3 },
+                      }}
+                      className={`h-full flex flex-col space-y-8 onboarding-animation-wrapper ${
+                        currentStep === 1 ? 'onboarding-step location' : 'onboarding-step'
+                      }`}
+                    >
                   {/* Step 1: Industry */}
                   {currentStep === 0 && (
-                    <div className="space-y-6">
+                    <div className="flex-1 flex flex-col space-y-6">
                       <div className="text-center space-y-2">
                         <Building2 className="w-12 h-12 text-accent mx-auto" />
                         <h2 className="text-2xl font-heading font-bold">What's your industry?</h2>
@@ -214,7 +252,7 @@ export default function Onboarding() {
                         />
                       </div>
 
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-4">
                         {filteredIndustries.map((industry) => (
                           <Chip
                             key={industry.id}
@@ -232,7 +270,7 @@ export default function Onboarding() {
 
                   {/* Step 2: Location */}
                   {currentStep === 1 && (
-                    <div className="space-y-6">
+                    <div className="flex-1 flex flex-col space-y-6">
                       <div className="text-center space-y-2">
                         <MapPin className="w-12 h-12 text-accent mx-auto" />
                         <h2 className="text-2xl font-heading font-bold">Where is your business located?</h2>
@@ -249,16 +287,18 @@ export default function Onboarding() {
                         />
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {filteredStates.map((state) => (
-                          <Chip
-                            key={state}
-                            selected={selectedLocation === state}
-                            onClick={() => setSelectedLocation(state)}
-                          >
-                            {state}
-                          </Chip>
-                        ))}
+                      <div className="flex-1 overflow-y-auto pr-2">
+                        <div className="grid grid-cols-2 gap-3">
+                          {filteredStates.map((state) => (
+                            <Chip
+                              key={state}
+                              selected={selectedLocation === state}
+                              onClick={() => setSelectedLocation(state)}
+                            >
+                              {state}
+                            </Chip>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   )}
@@ -272,40 +312,69 @@ export default function Onboarding() {
                         <p className="text-muted-foreground">Grant eligibility often depends on company size.</p>
                       </div>
 
-                      <div className="max-w-md mx-auto">
-                        <SegmentedSlider
-                          options={teamSizeOptions}
-                          value={selectedTeamSize}
-                          onChange={(value) => setSelectedTeamSize(value as TeamSize)}
-                        />
-                      </div>
+                      <div className="flex flex-col items-center space-y-6">
+                        <div className="w-full max-w-md">
+                          <SegmentedSlider
+                            options={teamSizeOptions}
+                            value={selectedTeamSize}
+                            onChange={(value) => setSelectedTeamSize(value as TeamSize)}
+                          />
+                        </div>
 
-                      <div className="text-center text-sm text-muted-foreground">
-                        Current selection: <span className="font-medium text-foreground">{selectedTeamSize} employees</span>
+                        <div className="text-center text-sm text-muted-foreground">
+                          Current selection: <span className="font-medium text-foreground">{selectedTeamSize} employees</span>
+                        </div>
                       </div>
                     </div>
                   )}
 
                   {/* Step 4: Funding Needs */}
                   {currentStep === 3 && (
-                    <div className="space-y-6">
+                    <div className="flex-1 flex flex-col space-y-6">
                       <div className="text-center space-y-2">
                         <Target className="w-12 h-12 text-accent mx-auto" />
                         <h2 className="text-2xl font-heading font-bold">What do you need funding for?</h2>
                         <p className="text-muted-foreground">Select all that apply to your business needs.</p>
                       </div>
 
-                      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                        {fundingNeeds.map((need) => (
-                          <Chip
-                            key={need}
-                            selected={selectedNeeds.includes(need)}
-                            onClick={() => toggleNeed(need)}
-                            variant="need"
-                          >
-                            {need}
-                          </Chip>
-                        ))}
+                      <div className="flex-1 overflow-y-auto pr-2">
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {fundingNeeds.map((need) => (
+                            <Chip
+                              key={need}
+                              selected={selectedNeeds.includes(need)}
+                              onClick={() => toggleNeed(need)}
+                              variant="need"
+                            >
+                              {need}
+                            </Chip>
+                          ))}
+                          
+                          {/* Custom Need Chip */}
+                          <div className="relative">
+                            {!showCustomInput ? (
+                              <Chip
+                                selected={selectedNeeds.some(need => need.startsWith('Custom:'))}
+                                onClick={handleCustomNeedClick}
+                                variant="need"
+                              >
+                                Custom
+                              </Chip>
+                            ) : (
+                              <div className="relative">
+                                <Input
+                                  value={customNeed}
+                                  onChange={(e) => setCustomNeed(e.target.value)}
+                                  onBlur={handleCustomNeedSave}
+                                  onKeyPress={handleCustomNeedKeyPress}
+                                  placeholder="Enter custom need..."
+                                  className="w-full h-10 px-4 py-2 rounded-full border-2 border-accent bg-accent/10 text-accent-foreground focus:ring-2 focus:ring-accent/20"
+                                  autoFocus
+                                />
+                              </div>
+                            )}
+                          </div>
+                        </div>
                       </div>
 
                       <YearsSlider
@@ -318,83 +387,145 @@ export default function Onboarding() {
 
                   {/* Step 5: Confirmation */}
                   {currentStep === 4 && (
-                    <div className="space-y-6">
+                    <div className="flex-1 flex flex-col space-y-6">
                       <div className="text-center space-y-2">
                         <CheckCircle className="w-12 h-12 text-green-500 mx-auto" />
                         <h2 className="text-2xl font-heading font-bold">Perfect! Let's review your profile</h2>
                         <p className="text-muted-foreground">We'll use this information to find the best grant matches.</p>
                       </div>
 
-                      <div className="bg-muted/50 rounded-2xl p-6 space-y-4">
+                      <div className="flex-1 space-y-4">
                         <div className="grid md:grid-cols-2 gap-4">
-                          <div>
-                            <span className="text-sm font-medium text-muted-foreground">Industry</span>
-                            <p className="font-medium">{industries.find(i => i.id === selectedIndustry)?.name}</p>
+                          <div className="bg-white/40 backdrop-blur-md rounded-lg p-3 shadow-sm border border-white/20">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-sm font-medium text-muted-foreground">Industry</span>
+                                <p className="font-medium">{industries.find(i => i.id === selectedIndustry)?.name}</p>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditField(0)}
+                                className="p-2 h-8 w-8 border border-accent/30 rounded-lg hover:bg-accent/10"
+                              >
+                                <Edit className="w-4 h-4 text-accent" />
+                              </Button>
+                            </div>
                           </div>
-                          <div>
-                            <span className="text-sm font-medium text-muted-foreground">Location</span>
-                            <p className="font-medium">{selectedLocation}</p>
+                          <div className="bg-white/40 backdrop-blur-md rounded-lg p-3 shadow-sm border border-white/20">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-sm font-medium text-muted-foreground">Location</span>
+                                <p className="font-medium">{selectedLocation}</p>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditField(1)}
+                                className="p-2 h-8 w-8 border border-accent/30 rounded-lg hover:bg-accent/10"
+                              >
+                                <Edit className="w-4 h-4 text-accent" />
+                              </Button>
+                            </div>
                           </div>
-                          <div>
-                            <span className="text-sm font-medium text-muted-foreground">Team Size</span>
-                            <p className="font-medium">{selectedTeamSize} employees</p>
+                          <div className="bg-white/40 backdrop-blur-md rounded-lg p-3 shadow-sm border border-white/20">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-sm font-medium text-muted-foreground">Team Size</span>
+                                <p className="font-medium">{selectedTeamSize} employees</p>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditField(2)}
+                                className="p-2 h-8 w-8 border border-accent/30 rounded-lg hover:bg-accent/10"
+                              >
+                                <Edit className="w-4 h-4 text-accent" />
+                              </Button>
+                            </div>
                           </div>
-                          <div>
-                            <span className="text-sm font-medium text-muted-foreground">Years in Operation</span>
-                            <p className="font-medium">{yearsInOperation} years</p>
+                          <div className="bg-white/40 backdrop-blur-md rounded-lg p-3 shadow-sm border border-white/20">
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <span className="text-sm font-medium text-muted-foreground">Years in Operation</span>
+                                <p className="font-medium">{yearsInOperation} years</p>
+                              </div>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                onClick={() => handleEditField(3)}
+                                className="p-2 h-8 w-8 border border-accent/30 rounded-lg hover:bg-accent/10"
+                              >
+                                <Edit className="w-4 h-4 text-accent" />
+                              </Button>
+                            </div>
                           </div>
                         </div>
                         
-                        <div>
-                          <span className="text-sm font-medium text-muted-foreground">Funding Needs</span>
-                          <div className="flex flex-wrap gap-2 mt-2">
-                            {selectedNeeds.map((need) => (
-                              <span key={need} className="px-3 py-1 bg-accent/10 text-accent text-sm rounded-full">
-                                {need}
-                              </span>
-                            ))}
+                        <div className="bg-white/40 backdrop-blur-md rounded-lg p-3 shadow-sm border border-white/20">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <span className="text-sm font-medium text-muted-foreground">Funding Needs</span>
+                              <div className="flex flex-wrap gap-2 mt-2">
+                                {selectedNeeds.map((need) => (
+                                  <div key={need} className="bg-brand-gold/20 border border-brand-gold rounded-lg px-3 py-1 shadow-sm">
+                                    <span className="text-accent text-sm font-medium">{need}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </div>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              onClick={() => handleEditField(3)}
+                              className="p-2 h-8 w-8 border border-accent/30 rounded-lg hover:bg-accent/10 mt-6"
+                            >
+                              <Edit className="w-4 h-4 text-accent" />
+                            </Button>
                           </div>
                         </div>
                       </div>
                     </div>
                   )}
-                </motion.div>
-              </AnimatePresence>
-
-              {/* Navigation */}
-              <div className="flex justify-between items-center mt-8 pt-6 border-t">
-                <Button
-                  variant="ghost"
-                  onClick={handlePrevious}
-                  disabled={currentStep === 0}
-                  className="gap-2"
-                >
-                  <ArrowLeft className="w-4 h-4" />
-                  Previous
-                </Button>
-
-                <div className="text-sm text-muted-foreground md:hidden">
-                  Step {currentStep + 1} of {steps.length}
+                    </motion.div>
+                  </AnimatePresence>
                 </div>
 
-                {currentStep < steps.length - 1 ? (
+                {/* Fixed Navigation */}
+                <div className="flex-shrink-0 flex justify-between items-center pt-6 border-t">
                   <Button
-                    onClick={handleNext}
-                    disabled={!isStepValid()}
+                    variant="ghost"
+                    onClick={handlePrevious}
+                    disabled={currentStep === 0}
                     className="gap-2"
                   >
-                    Next
-                    <ArrowRight className="w-4 h-4" />
+                    <ArrowLeft className="w-4 h-4" />
+                    Previous
                   </Button>
-                ) : (
-                  <Button
-                    onClick={handleComplete}
-                    className="btn-hero gap-2"
-                  >
-                    Find My Matches
-                    <ArrowRight className="w-4 h-4" />
-                  </Button>
-                )}
+
+                  <div className="text-sm text-muted-foreground md:hidden">
+                    Step {currentStep + 1} of {steps.length}
+                  </div>
+
+                  {currentStep < steps.length - 1 ? (
+                    <Button
+                      onClick={handleNext}
+                      disabled={!isStepValid()}
+                      className="gap-2"
+                    >
+                      Next
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleComplete}
+                      className="btn-hero gap-2"
+                    >
+                      Find My Matches
+                      <ArrowRight className="w-4 h-4" />
+                    </Button>
+                  )}
+                </div>
               </div>
             </CardContent>
           </Card>

@@ -16,94 +16,52 @@ interface StepperProps {
 export function Stepper({ steps, currentStep, className }: StepperProps) {
   return (
     <nav aria-label="Progress" className={cn("w-full", className)}>
-      {/* Desktop Stepper */}
-      <ol className="hidden md:flex items-center justify-between">
-        {steps.map((step, stepIdx) => (
-          <li key={step.id} className="flex items-center">
-            <div
-              className={cn(
-                "relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-300",
-                stepIdx < currentStep
-                  ? "bg-accent border-accent text-accent-foreground"
-                  : stepIdx === currentStep
-                  ? "border-primary text-primary bg-primary/10"
-                  : "border-muted text-muted-foreground"
-              )}
-            >
-              {stepIdx < currentStep ? (
-                <Check className="w-4 h-4" />
-              ) : (
-                <span className="text-sm font-medium">{step.id}</span>
-              )}
-            </div>
-            
-            <div className="ml-3 min-w-0 flex-1">
-              <p
-                className={cn(
-                  "text-sm font-medium transition-colors duration-300",
-                  stepIdx <= currentStep ? "text-foreground" : "text-muted-foreground"
-                )}
-              >
-                {step.title}
-              </p>
-              {step.description && (
-                <p
-                  className={cn(
-                    "text-xs transition-colors duration-300",
-                    stepIdx <= currentStep ? "text-muted-foreground" : "text-muted-foreground/60"
-                  )}
-                >
-                  {step.description}
-                </p>
-              )}
-            </div>
-
-            {stepIdx < steps.length - 1 && (
-              <div
-                className={cn(
-                  "flex-1 h-0.5 mx-4 transition-colors duration-300",
-                  stepIdx < currentStep ? "bg-accent" : "bg-muted"
-                )}
-              />
-            )}
-          </li>
-        ))}
-      </ol>
-
-      {/* Mobile Stepper - Dots with step indicator */}
-      <div className="md:hidden">
-        <div className="flex items-center justify-center space-x-2 mb-2">
+      {/* Floating Island Stepper */}
+      <div className="flex justify-center">
+        <div className="inline-flex items-center bg-white/90 backdrop-blur-sm shadow-lg rounded-full px-6 py-2 border border-white/20">
           {steps.map((step, stepIdx) => (
             <div key={step.id} className="flex items-center">
+              {/* Step Circle */}
               <div
                 className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-300",
+                  "relative flex items-center justify-center w-8 h-8 rounded-full text-sm font-semibold transition-all duration-300",
                   stepIdx < currentStep
-                    ? "bg-accent"
+                    ? "bg-brand-gold text-white"
                     : stepIdx === currentStep
-                    ? "bg-primary w-3 h-3"
-                    : "bg-muted"
+                    ? "bg-brand-magenta text-white"
+                    : "bg-muted text-muted-foreground"
                 )}
-              />
+              >
+                {stepIdx < currentStep ? (
+                  <Check className="w-4 h-4" />
+                ) : (
+                  <span>{step.id}</span>
+                )}
+              </div>
+              
+              {/* Step Label */}
+              <div className="ml-2 mr-3">
+                <p
+                  className={cn(
+                    "text-xs font-medium transition-colors duration-300 whitespace-nowrap",
+                    stepIdx <= currentStep ? "text-foreground" : "text-muted-foreground"
+                  )}
+                >
+                  {step.title}
+                </p>
+              </div>
+
+              {/* Progress Line */}
               {stepIdx < steps.length - 1 && (
                 <div
                   className={cn(
-                    "w-4 h-0.5 mx-1 transition-colors duration-300",
-                    stepIdx < currentStep ? "bg-accent" : "bg-muted"
+                    "w-8 h-0.5 mx-1 transition-colors duration-300",
+                    stepIdx < currentStep ? "bg-brand-gold" : "bg-muted"
                   )}
                 />
               )}
             </div>
           ))}
-        </div>
-        
-        <div className="text-center">
-          <p className="text-sm font-medium text-foreground">
-            {steps[currentStep]?.title}
-          </p>
-          <p className="text-xs text-muted-foreground">
-            Step {currentStep + 1} of {steps.length}
-          </p>
         </div>
       </div>
     </nav>

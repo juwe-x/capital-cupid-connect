@@ -109,7 +109,7 @@
 
   /* Button Variants */
   .btn-hero {
-    @apply bg-gradient-to-r from-accent to-brand-gold text-neutral-dark font-semibold px-8 py-4 rounded-2xl transition-all duration-300 hover:scale-105;
+    @apply bg-gradient-to-r from-accent to-brand-gold text-neutral-dark font-semibold px-8 py-4 rounded-2xl transition-all duration-300 hover:shadow-lg;
     box-shadow: var(--shadow-gold);
     animation: gentle-pulse 3s ease-in-out infinite;
   }
@@ -121,7 +121,7 @@
   }
   
   .btn-ghost {
-    @apply text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-brand-navy/10 transition-all duration-300 hover:scale-105;
+    @apply text-primary hover:bg-gradient-to-r hover:from-primary/10 hover:to-brand-navy/10 transition-all duration-300 hover:shadow-md;
   }
 
   @keyframes gentle-pulse {
@@ -135,16 +135,16 @@
   }
   
   .card-floating {
-    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 transition-all duration-300 hover:shadow-xl hover:scale-[1.02] hover:-rotate-1;
+    @apply bg-white/95 backdrop-blur-sm rounded-2xl shadow-soft border border-white/20 transition-all duration-300 hover:shadow-xl;
   }
 
   /* Interactive Elements */
   .chip-selectable {
-    @apply px-4 py-2 rounded-full border-2 border-muted text-muted-foreground cursor-pointer transition-all duration-200 hover:scale-105 hover:border-accent/50;
+    @apply px-4 py-2 rounded-full border-2 border-muted text-muted-foreground cursor-pointer transition-all duration-200 hover:border-accent/50 hover:bg-accent/5;
   }
   
   .chip-selected {
-    @apply border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20 scale-105;
+    @apply border-accent bg-accent/10 text-accent-foreground ring-2 ring-accent/20;
   }
 
   /* Swipe Overlays */
@@ -190,11 +190,11 @@
 @layer utilities {
   /* Motion Utilities */
   .hover-lift {
-    @apply transition-all duration-300 hover:scale-105 hover:shadow-xl;
+    @apply transition-all duration-300 hover:shadow-xl;
   }
   
   .hover-tilt {
-    @apply transition-all duration-300 hover:rotate-1 hover:scale-105;
+    @apply transition-all duration-300 hover:shadow-lg;
   }
   
   .spring-entrance {
@@ -214,6 +214,21 @@
   
   .text-gradient-brand {
     @apply bg-gradient-to-r from-primary to-brand-navy bg-clip-text text-transparent;
+  }
+
+  /* Onboarding Scrollbar Fixes */
+  .onboarding-container, 
+  .onboarding-step, 
+  .onboarding-animation-wrapper {
+    overflow-x: hidden !important;
+  }
+
+  .onboarding-step {
+    overflow-y: hidden;
+  }
+
+  .onboarding-step.location {
+    overflow-y: auto; /* vertical scroll only here */
   }
 }
 

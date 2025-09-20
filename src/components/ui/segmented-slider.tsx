@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 
 interface SegmentedSliderProps {
@@ -12,17 +11,15 @@ export function SegmentedSlider({ options, value, onChange, className }: Segment
   const selectedIndex = options.findIndex(option => option.value === value);
 
   return (
-    <div className={cn("relative", className)}>
-      <div className="flex bg-muted rounded-2xl p-1 relative">
+    <div className={cn("relative w-full", className)}>
+      <div className="flex bg-muted/30 rounded-2xl p-1.5 relative border border-muted/50">
         {/* Background slider */}
-        <motion.div
-          className="absolute top-1 bottom-1 bg-accent rounded-xl"
-          initial={false}
-          animate={{
+        <div
+          className="absolute top-1.5 bottom-1.5 bg-gradient-to-r from-accent to-brand-gold rounded-xl transition-all duration-300 ease-out shadow-sm"
+          style={{
             left: `${(selectedIndex / options.length) * 100}%`,
             width: `${100 / options.length}%`,
           }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
         />
         
         {options.map((option, index) => (
@@ -30,10 +27,10 @@ export function SegmentedSlider({ options, value, onChange, className }: Segment
             key={option.value}
             onClick={() => onChange(option.value)}
             className={cn(
-              "relative flex-1 px-4 py-3 text-sm font-medium rounded-xl transition-colors duration-200 z-10",
+              "relative flex-1 px-3 py-2.5 text-sm font-medium rounded-xl transition-all duration-200 z-10",
               selectedIndex === index
-                ? "text-accent-foreground"
-                : "text-muted-foreground hover:text-foreground"
+                ? "text-white font-semibold"
+                : "text-muted-foreground hover:text-foreground hover:bg-muted/20"
             )}
           >
             {option.label}
