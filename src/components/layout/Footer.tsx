@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import logo from '@/assets/logo.png';
 
 const quickLinks = [
   { name: 'Home', href: '/' },
@@ -24,13 +24,12 @@ export function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {/* Logo & Copyright */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-r from-brand-magenta to-accent rounded-lg">
-                <Heart className="w-5 h-5 text-white" />
-              </div>
-              <span className="font-heading font-bold text-xl">
-                CapitalCupid
-              </span>
+            <div className="flex items-center">
+              <img 
+                src={logo} 
+                alt="CapitalCupid Logo" 
+                className="h-10 w-auto filter brightness-0 invert"
+              />
             </div>
             <p className="text-sm text-white/70">
               © {currentYear} CapitalCupid. All rights reserved.

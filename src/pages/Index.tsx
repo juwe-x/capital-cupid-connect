@@ -4,7 +4,9 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Zap, Heart, FileText, Target } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { AnimatedCupid } from '@/components/ui/animated-cupid';
+import { TinderShuffleCards } from '@/components/ui/tinder-shuffle-cards';
+import { StellarBurstButton } from '@/components/ui/stellar-burst-button';
+import { GhostButton } from '@/components/ui/ghost-button';
 import { ParticleBackground } from '@/components/ui/particle-background';
 import { Header } from '@/components/layout/Header';
 import { Footer } from '@/components/layout/Footer';
@@ -36,6 +38,7 @@ const valueProps = [
 
 const Index = () => {
   const [currentJourneyStep, setCurrentJourneyStep] = useState(0);
+  const [isCTAInteracting, setIsCTAInteracting] = useState(false);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -50,8 +53,11 @@ const Index = () => {
       <Header />
       
       {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        <ParticleBackground density="medium" />
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-r from-pink-50 to-yellow-50">
+        <ParticleBackground 
+          density="medium" 
+          isCTAInteracting={isCTAInteracting}
+        />
         
         <div className="container relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
@@ -73,16 +79,23 @@ const Index = () => {
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Button asChild size="lg" className="btn-hero">
-                  <Link to="/onboarding">
+              <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                <StellarBurstButton
+                  asChild
+                  size="lg"
+                  onMouseEnter={() => setIsCTAInteracting(true)}
+                  onMouseLeave={() => setIsCTAInteracting(false)}
+                  className="flex-1 sm:flex-none"
+                >
+                  <Link to="/account-creation">
                     Start My Match
-                    <ArrowRight className="ml-2 w-5 h-5" />
                   </Link>
-                </Button>
-                <Button variant="ghost" size="lg" className="btn-ghost">
-                  Learn More
-                </Button>
+                </StellarBurstButton>
+                <GhostButton asChild size="lg" className="flex-1 sm:flex-none">
+                  <Link to="#learn-more">
+                    Learn More
+                  </Link>
+                </GhostButton>
               </div>
 
               {/* Mini Journey Bar */}
@@ -121,14 +134,14 @@ const Index = () => {
               </motion.div>
             </motion.div>
 
-            {/* Hero Animation */}
+            {/* Hero Animation - Tinder Shuffle Cards */}
             <motion.div 
               className="flex justify-center lg:justify-end"
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.2 }}
             >
-              <AnimatedCupid />
+              <TinderShuffleCards />
             </motion.div>
           </div>
         </div>
@@ -160,18 +173,42 @@ const Index = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
+                whileHover={{
+                  y: -8,
+                  scale: 1.02,
+                  transition: { duration: 0.2, ease: "easeOut" }
+                }}
               >
-                <Card className="card-floating hover-tilt group h-full">
+                <Card className="card-floating hover-tilt group h-full cursor-pointer">
                   <CardContent className="p-8 text-center space-y-4">
-                    <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-accent to-brand-gold rounded-2xl group-hover:scale-110 transition-transform duration-300">
+                    <motion.div 
+                      className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-accent to-brand-gold rounded-2xl group-hover:scale-110 transition-transform duration-300"
+                      whileHover={{
+                        scale: 1.15,
+                        rotate: [0, -5, 5, 0],
+                        transition: { duration: 0.3, ease: "easeInOut" }
+                      }}
+                    >
                       <prop.icon className="w-8 h-8 text-white" />
-                    </div>
-                    <h3 className="text-xl font-heading font-bold">
+                    </motion.div>
+                    <motion.h3 
+                      className="text-xl font-heading font-bold"
+                      whileHover={{
+                        color: "#ff4081",
+                        transition: { duration: 0.2 }
+                      }}
+                    >
                       {prop.title}
-                    </h3>
-                    <p className="text-muted-foreground">
+                    </motion.h3>
+                    <motion.p 
+                      className="text-muted-foreground"
+                      whileHover={{
+                        color: "#374151",
+                        transition: { duration: 0.2 }
+                      }}
+                    >
                       {prop.description}
-                    </p>
+                    </motion.p>
                   </CardContent>
                 </Card>
               </motion.div>

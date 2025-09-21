@@ -189,21 +189,21 @@ export default function Shortlist() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.6, delay: 0.1 + (index * 0.05) }}
                 >
-                  <Card className="card-floating hover-lift group h-full">
-                    <CardContent className="p-6 space-y-4">
-                      {/* Header */}
+                  <Card className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl rounded-2xl group h-full transition-all duration-300 ease-in-out hover:scale-105">
+                    <CardContent className="p-6 space-y-3">
+                      {/* Header - Logo + Grant Title + Org name */}
                       <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-primary to-brand-navy rounded-lg text-white text-sm font-bold">
+                        <div className="flex items-center gap-3 flex-1">
+                          <div className="flex items-center justify-center w-12 h-12 bg-gradient-to-r from-primary to-brand-navy rounded-lg text-white text-sm font-bold flex-shrink-0">
                             {grant.logo || grant.agency.substring(0, 2).toUpperCase()}
                           </div>
-                          <div className="space-y-1">
-                            <h3 className="font-heading font-bold text-lg leading-tight group-hover:text-primary transition-colors">
+                          <div className="space-y-1 min-w-0 flex-1">
+                            <h3 className="font-heading font-bold text-lg leading-tight group-hover:text-primary transition-colors line-clamp-2">
                               {grant.title}
                             </h3>
                             <p className="text-sm text-muted-foreground flex items-center gap-1">
-                              <Building className="w-3 h-3" />
-                              {grant.agency}
+                              <Building className="w-3 h-3 flex-shrink-0" />
+                              <span className="truncate">{grant.agency}</span>
                             </p>
                           </div>
                         </div>
@@ -212,65 +212,66 @@ export default function Shortlist() {
                           variant="ghost"
                           size="sm"
                           onClick={() => handleRemove(grant.id)}
-                          className="text-muted-foreground hover:text-red-500 transition-colors"
+                          className="text-muted-foreground hover:text-red-500 transition-colors flex-shrink-0"
                         >
                           <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
 
-                      {/* Amount */}
-                      <div className="space-y-1">
-                        <span className="text-sm text-muted-foreground">Funding Amount</span>
-                        <p className="text-xl font-bold text-gradient-gold">
-                          {grant.amount}
-                        </p>
-                      </div>
-
-                      {/* Deadline */}
-                      <div className="flex items-center gap-2">
-                        <Clock className="w-4 h-4 text-muted-foreground" />
-                        <span className={cn(
-                          "text-sm font-medium",
-                          isNearDeadline(grant.deadline) ? "text-red-500" : "text-muted-foreground"
-                        )}>
-                          Due {formatDeadline(grant.deadline)}
-                        </span>
-                        {isNearDeadline(grant.deadline) && (
-                          <Badge variant="destructive" className="text-xs">
-                            Urgent
-                          </Badge>
-                        )}
+                      {/* Middle - Funding amount + Deadline (highlighted) */}
+                      <div className="bg-gradient-to-r from-brand-gold/10 to-brand-gold/5 rounded-xl p-4 space-y-3">
+                        <div className="space-y-1">
+                          <span className="text-sm text-muted-foreground font-medium">Funding Amount</span>
+                          <p className="text-2xl font-bold text-gradient-gold">
+                            {grant.amount}
+                          </p>
+                        </div>
+                        
+                        <div className="flex items-center gap-2">
+                          <Clock className="w-4 h-4 text-muted-foreground" />
+                          <span className={cn(
+                            "text-sm font-medium",
+                            isNearDeadline(grant.deadline) ? "text-red-500" : "text-muted-foreground"
+                          )}>
+                            Due {formatDeadline(grant.deadline)}
+                          </span>
+                          {isNearDeadline(grant.deadline) && (
+                            <Badge variant="destructive" className="text-xs">
+                              Urgent
+                            </Badge>
+                          )}
+                        </div>
                       </div>
 
                       {/* Summary */}
-                      <p className="text-sm text-muted-foreground line-clamp-3">
+                      <p className="text-sm text-muted-foreground line-clamp-2">
                         {grant.summary}
                       </p>
 
-                      {/* Tags */}
+                      {/* Tags - Clean pill chips */}
                       {grant.tags && grant.tags.length > 0 && (
-                        <div className="flex flex-wrap gap-1">
+                        <div className="flex flex-wrap gap-2">
                           {grant.tags.slice(0, 3).map((tag, tagIndex) => (
-                            <Badge key={tagIndex} variant="secondary" className="text-xs">
+                            <Badge key={tagIndex} variant="secondary" className="text-xs rounded-full px-3 py-1 bg-brand-gold/10 text-brand-gold border-brand-gold/20">
                               {tag}
                             </Badge>
                           ))}
                           {grant.tags.length > 3 && (
-                            <Badge variant="secondary" className="text-xs">
+                            <Badge variant="secondary" className="text-xs rounded-full px-3 py-1 bg-muted/50 text-muted-foreground">
                               +{grant.tags.length - 3} more
                             </Badge>
                           )}
                         </div>
                       )}
 
-                      {/* Actions */}
-                      <div className="flex gap-2 pt-2">
-                        <Button asChild size="sm" className="flex-1">
+                      {/* Actions - Consistently aligned at bottom */}
+                      <div className="flex gap-2 pt-3 mt-auto">
+                        <Button asChild size="sm" className="flex-1 bg-brand-magenta hover:bg-brand-magenta/90 text-white">
                           <Link to={`/grant/${grant.id}`}>
                             View Details
                           </Link>
                         </Button>
-                        <Button asChild size="sm" variant="outline">
+                        <Button asChild size="sm" variant="outline" className="flex-1 border-brand-gold text-brand-gold hover:bg-brand-gold hover:text-white">
                           <Link to={`/apply/${grant.id}`}>
                             Apply Now
                           </Link>

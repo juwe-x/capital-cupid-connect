@@ -5,6 +5,7 @@ interface ParticleBackgroundProps {
   density?: 'low' | 'medium' | 'high';
   className?: string;
   onBurst?: () => number;
+  isCTAInteracting?: boolean;
 }
 
 interface FloatingIcon {
@@ -18,7 +19,7 @@ interface FloatingIcon {
   opacity: number;
 }
 
-export function ParticleBackground({ density = 'medium', className = '', onBurst }: ParticleBackgroundProps) {
+export function ParticleBackground({ density = 'medium', className = '', onBurst, isCTAInteracting = false }: ParticleBackgroundProps) {
   const [particles, setParticles] = useState<FloatingIcon[]>([]);
   const [burstIcons, setBurstIcons] = useState<FloatingIcon[]>([]);
 
@@ -42,7 +43,7 @@ export function ParticleBackground({ density = 'medium', className = '', onBurst
 
   // Initialize persistent particles
   useEffect(() => {
-    const particleCount = density === 'low' ? 8 : density === 'medium' ? 15 : 20;
+    const particleCount = density === 'low' ? 12 : density === 'medium' ? 18 : 25; // Increased frequency
     const initialParticles = Array.from({ length: particleCount }, () => createParticle());
     setParticles(initialParticles);
   }, [density]);
@@ -92,7 +93,7 @@ export function ParticleBackground({ density = 'medium', className = '', onBurst
         x: isBurst ? [Math.random() * 40 - 20, Math.random() * 60 - 30] : [0, Math.random() * 20 - 10, Math.random() * 30 - 15],
         opacity: isBurst ? [particle.opacity, particle.opacity * 0.8, 0] : [0, particle.opacity, particle.opacity * 0.8, 0],
         rotate: isBurst ? [0, Math.random() * 360] : [0, 360],
-        scale: isBurst ? [0.8, 1, 0.8] : [1, 1, 1],
+        scale: isBurst ? [0.8, 1, 0.8] : isCTAInteracting ? [1, 1.3, 1] : [1, 1, 1],
       }}
       transition={{
         duration: particle.duration,

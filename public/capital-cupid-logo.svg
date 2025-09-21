@@ -1,0 +1,21 @@
+<svg width="200" height="60" viewBox="0 0 200 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Heart with arrow and wing -->
+  <g>
+    <!-- Heart shape -->
+    <path d="M20 15C20 8.92487 24.9249 4 31 4C34.866 4 38.196 6.196 40 9.5C41.804 6.196 45.134 4 49 4C55.0751 4 60 8.92487 60 15C60 20.5 40 35 40 35C40 35 20 20.5 20 15Z" fill="#E91E63"/>
+    
+    <!-- Arrow shaft -->
+    <path d="M40 25L55 10" stroke="#1C2B4A" stroke-width="3" stroke-linecap="round"/>
+    
+    <!-- Arrow head -->
+    <path d="M50 15L55 10L50 5" stroke="#1C2B4A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    
+    <!-- Wing -->
+    <path d="M35 20C32 18 30 20 32 23C34 25 37 24 35 20Z" fill="#E91E63"/>
+  </g>
+  
+  <!-- Text -->
+  <text x="70" y="25" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#1C2B4A">Capital</text>
+  <text x="70" y="45" font-family="Arial, sans-serif" font-size="18" font-weight="bold" fill="#E91E63">Cupid</text>
+</svg>
+

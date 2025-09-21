@@ -28,6 +28,7 @@ import { SegmentedSlider } from '@/components/ui/segmented-slider';
 import { YearsSlider } from '@/components/ui/years-slider';
 import { ParticleBackground } from '@/components/ui/particle-background';
 import { useProfileStore } from '@/lib/stores/profile-store';
+import { savePreferences, Preferences } from '@/lib/types/account';
 import type { TeamSize, FundingNeed } from '@/lib/types';
 
 const steps = [
@@ -126,6 +127,7 @@ export default function Onboarding() {
   };
 
   const handleComplete = () => {
+    // Save to profile store
     setProfile({
       industry: selectedIndustry,
       location: selectedLocation,
@@ -134,6 +136,20 @@ export default function Onboarding() {
       years: yearsInOperation,
       isComplete: true,
     });
+
+    // Save preferences to localStorage
+    const preferences: Preferences = {
+      businessType: selectedIndustry,
+      industry: selectedIndustry,
+      fundingAmount: selectedNeeds.join(', '),
+      location: selectedLocation,
+      experience: `${yearsInOperation} years`,
+      goals: selectedNeeds,
+      timeline: 'Within 6 months',
+      createdAt: new Date().toISOString(),
+    };
+
+    savePreferences(preferences);
     navigate('/swipe');
   };
 
@@ -181,7 +197,7 @@ export default function Onboarding() {
   // Slide transition variants
   const slideVariants = {
     enter: (direction: number) => ({
-      x: direction > 0 ? 300 : -300,
+      x: direction > 0 ? 20 : -20,
       opacity: 0,
     }),
     center: {
@@ -191,7 +207,7 @@ export default function Onboarding() {
     },
     exit: (direction: number) => ({
       zIndex: 0,
-      x: direction < 0 ? 300 : -300,
+      x: direction < 0 ? 20 : -20,
       opacity: 0,
     }),
   };
@@ -213,10 +229,10 @@ export default function Onboarding() {
           </div>
 
           {/* Main Card */}
-          <Card className="card-floating h-[600px]">
+          <Card className="card-floating h-[600px] overflow-hidden">
             <CardContent className="p-8 h-full">
               <div className="flex h-full flex-col">
-                <div className="flex-grow min-h-0">
+                <div className="flex-grow min-h-0 overflow-hidden">
                   <AnimatePresence mode="wait" custom={currentStep}>
                     <motion.div
                       key={currentStep}
@@ -226,8 +242,8 @@ export default function Onboarding() {
                       animate="center"
                       exit="exit"
                       transition={{
-                        x: { type: "spring", stiffness: 300, damping: 30 },
-                        opacity: { duration: 0.3 },
+                        x: { type: "tween", duration: 0.28, ease: "easeInOut" },
+                        opacity: { duration: 0.25, ease: "easeInOut" },
                       }}
                       className={`h-full flex flex-col space-y-8 onboarding-animation-wrapper ${
                         currentStep === 1 ? 'onboarding-step location' : 'onboarding-step'
@@ -491,8 +507,8 @@ export default function Onboarding() {
                   </AnimatePresence>
                 </div>
 
-                {/* Fixed Navigation */}
-                <div className="flex-shrink-0 flex justify-between items-center pt-6 border-t">
+                {/* Fixed Navigation - Anchored at bottom */}
+                <div className="flex-shrink-0 flex justify-between items-center pt-6 border-t border-border/20 bg-background/95 backdrop-blur-sm">
                   <Button
                     variant="ghost"
                     onClick={handlePrevious}

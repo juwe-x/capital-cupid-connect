@@ -216,6 +216,115 @@
     @apply bg-gradient-to-r from-primary to-brand-navy bg-clip-text text-transparent;
   }
 
+  /* Shuffle Cards Glow Effect */
+  .shuffle-card-glow {
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 193, 7, 0.1),
+      0 0 20px rgba(255, 64, 129, 0.1);
+  }
+
+  /* Stellar Button Effects */
+  .stellar-button-glow {
+    box-shadow: 
+      0 4px 12px rgba(255, 193, 7, 0.3),
+      0 0 20px rgba(255, 193, 7, 0.2);
+  }
+
+  .stellar-button-glow:hover {
+    box-shadow: 
+      0 8px 25px rgba(255, 193, 7, 0.4),
+      0 0 30px rgba(255, 193, 7, 0.3),
+      0 0 50px rgba(255, 193, 7, 0.2);
+  }
+
+  /* Tinder Card Effects */
+  .tinder-card {
+    box-shadow: 
+      0 10px 30px rgba(0, 0, 0, 0.2),
+      0 0 0 1px rgba(255, 193, 7, 0.1),
+      0 0 20px rgba(255, 64, 129, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+    transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+  }
+
+  .tinder-card:hover {
+    box-shadow: 
+      0 15px 40px rgba(0, 0, 0, 0.25),
+      0 0 0 1px rgba(255, 193, 7, 0.2),
+      0 0 30px rgba(255, 64, 129, 0.15);
+  }
+
+  /* Card floating animation */
+  .tinder-card-idle {
+    animation: float 4s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translate3d(0, 0, 0) rotate(0deg);
+    }
+    25% {
+      transform: translate3d(2px, -2px, 0) rotate(0.5deg);
+    }
+    50% {
+      transform: translate3d(-1px, -4px, 0) rotate(-0.5deg);
+    }
+    75% {
+      transform: translate3d(-2px, -1px, 0) rotate(0.3deg);
+    }
+  }
+
+  /* Feature card hover animations */
+  .card-floating {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, box-shadow;
+  }
+
+  .card-floating:hover {
+    box-shadow: 
+      0 20px 40px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(255, 64, 129, 0.1),
+      0 0 20px rgba(255, 64, 129, 0.1);
+  }
+
+  .hover-tilt {
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hover-tilt:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+  }
+
+  /* Enhanced Button Animations */
+  .stellar-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stellar-button:hover {
+    transform: translateY(-1px);
+  }
+
+  .ghost-button {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .ghost-button:hover {
+    transform: translateY(-2px);
+  }
+
+  /* Ghost Button Underline Animation */
+  .ghost-button-underline {
+    background: linear-gradient(90deg, #ff4081, #ffc107);
+    height: 2px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease-out;
+  }
+
   /* Onboarding Scrollbar Fixes */
   .onboarding-container, 
   .onboarding-step, 
